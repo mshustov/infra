@@ -1,0 +1,30 @@
+# Setup and configure mongodb for reddit app
+- name: "Reddit App: Install and configure mongodb service"
+  hosts: all
+  gather_facts: no
+  become: yes
+
+  tasks:
+  # add repository key
+  - name: Add APT key
+    apt_key:
+      id: EA312927
+      keyserver: keyserver.ubuntu.com
+
+  # use repo with mongodb pack
+  - name: Add APT repository
+    apt_repository:
+      repo: deb [ arch=amd64,arm64 ] http://repo.mongodb.org/apt/ubuntu xenial/mongodb-org/3.2 multiverse
+      state: present
+
+  # then install pack
+  - name: Install mongodb package
+    apt:
+      name: mongodb-org
+      state: present
+
+  - name: Configure service supervisor
+    systemd:
+      name: mongod
+      enabled: yes
+      state: started
