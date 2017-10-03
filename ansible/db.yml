@@ -1,0 +1,8 @@
+---
+- name: Configure MongoDB
+  # apply to db group, defined in the invertory file
+  hosts: db
+  # run the whole scenario from the root
+  become: true
+  roles:
+    - db
