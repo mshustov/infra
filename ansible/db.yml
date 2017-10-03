@@ -2,7 +2,13 @@
 - name: Configure MongoDB
   # apply to db group, defined in the invertory file
   hosts: db
+  gather_facts: false
   # run the whole scenario from the root
   become: true
+  pre_tasks:
+    # install python for testing purposes, that's needed only for vagrant
+    - name: Install python for Ansible
+      raw: test -e /usr/bin/python || (apt -y update && apt install -y python-minimal)
+      changed_when: false
   roles:
     - db
